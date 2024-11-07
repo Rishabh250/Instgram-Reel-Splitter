@@ -3,7 +3,6 @@ import instaloader
 import cv2
 import os
 import io
-import ffmpeg
 import zipfile
 import tempfile
 import imageio_ffmpeg as ffmpeg_exe
