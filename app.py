@@ -162,16 +162,17 @@ if st.button("Download Reel"):
             mime="video/mp4"
         )
 
-# Extract Frames Section
-st.markdown("<h2 class='sub-title'>Extract Frames</h2>", unsafe_allow_html=True)
-st.write("Upload a video to extract frames and download them as a ZIP file.")
-uploaded_video = st.file_uploader("Upload a video file", type=["mp4", "mov", "avi"], key="frame_extraction")
+# Shared File Uploader for Extract Frames and Cut Clip
+st.markdown("<h2 class='sub-title'>Upload Video for Processing</h2>", unsafe_allow_html=True)
+st.write("Upload a video file to extract frames or cut a specific clip.")
+uploaded_video = st.file_uploader("Upload a video file", type=["mp4", "mov", "avi"])
 
 if uploaded_video:
     temp_video_path = os.path.join(tempfile.gettempdir(), uploaded_video.name)
     with open(temp_video_path, "wb") as f:
         f.write(uploaded_video.read())
-    
+
+    # Extract Frames Section
     if st.button("Extract Frames"):
         frames_zip = extract_frames(temp_video_path)
         if frames_zip:
@@ -182,17 +183,11 @@ if uploaded_video:
                 mime="application/zip"
             )
 
-# Cut Clip Section
-st.markdown("<h2 class='sub-title'>Cut Clip</h2>", unsafe_allow_html=True)
-st.write("Upload a video and select start and end times to extract a specific clip.")
-uploaded_clip_video = st.file_uploader("Upload a video file for clip cutting", type=["mp4", "mov", "avi"], key="cut_clip")
+    # Cut Clip Section
+    st.markdown("<h2 class='sub-title'>Cut Clip</h2>", unsafe_allow_html=True)
+    st.write("Select start and end times to extract a specific clip from the uploaded video.")
 
-if uploaded_clip_video:
-    clip_video_path = os.path.join(tempfile.gettempdir(), uploaded_clip_video.name)
-    with open(clip_video_path, "wb") as f:
-        f.write(uploaded_clip_video.read())
-    
-    cap = cv2.VideoCapture(clip_video_path)
+    cap = cv2.VideoCapture(temp_video_path)
     video_duration = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) / cap.get(cv2.CAP_PROP_FPS))
     cap.release()
 
@@ -203,7 +198,7 @@ if uploaded_clip_video:
     )
 
     if st.button("Cut Clip"):
-        clip_zip = cut_clip(clip_video_path, start_time, end_time)
+        clip_zip = cut_clip(temp_video_path, start_time, end_time)
         if clip_zip:
             st.download_button(
                 label="Download Clip as ZIP",
