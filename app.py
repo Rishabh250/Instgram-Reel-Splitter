@@ -1,11 +1,13 @@
-import streamlit as st
-import instaloader
-import cv2
-import os
 import io
-import zipfile
+import os
+import subprocess
 import tempfile
+import zipfile
+
+import cv2
 import imageio_ffmpeg as ffmpeg_exe
+import instaloader
+import streamlit as st
 
 # Custom CSS for styling
 st.markdown("""
@@ -118,12 +120,18 @@ def cut_clip(video_path, start_time, end_time):
     try:
         # Use imageio-ffmpeg to locate the ffmpeg binary
         ffmpeg_path = ffmpeg_exe.get_ffmpeg_exe()
-        (
-            ffmpeg
-            .input(video_path, ss=start_time, to=end_time)
-            .output(output_path)
-            .run(cmd=ffmpeg_path)  # Specify the ffmpeg binary path
-        )
+        
+        # Run ffmpeg command using subprocess
+        command = [
+            ffmpeg_path,
+            '-i', video_path,
+            '-ss', str(start_time),
+            '-to', str(end_time),
+            '-c', 'copy',
+            output_path
+        ]
+        subprocess.run(command, check=True)
+
         st.success("Clip cut successfully")
 
         # Zip the output clip in memory
