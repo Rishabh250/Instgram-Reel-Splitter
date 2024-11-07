@@ -47,24 +47,29 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+video_dir = 'video'
 
-# Helper function to download Instagram reel
 def download_reel(url):
     if not url:
         st.error("No URL provided")
         return None
 
+    if not os.path.exists(video_dir):
+        os.makedirs(video_dir)
+
     loader = instaloader.Instaloader()
     try:
         post = instaloader.Post.from_shortcode(loader.context, url.split("/")[-2])
-        temp_dir = tempfile.gettempdir()
-        loader.download_post(post, target=temp_dir)
-        video_file = next((f for f in os.listdir(temp_dir) if f.endswith('.mp4')), None)
+        loader.download_post(post, target=video_dir)
+        video_file = next((f for f in os.listdir(video_dir) if f.endswith('.mp4')), None)
         
         if video_file:
-            video_path = os.path.join(temp_dir, video_file)
-            st.success("Video downloaded successfully")
-            with open(video_path, "rb") as f:
+            video_path = os.path.join(video_dir, video_file)
+            total_files = len([f for f in os.listdir(video_dir) if f.isdigit()])
+            next_index = str(total_files + 1)
+            target_path = os.path.join(video_dir, next_index + '.mp4')
+            os.rename(video_path, target_path)
+            with open(target_path, "rb") as f:
                 return io.BytesIO(f.read())
         else:
             st.error("Video download failed")
@@ -161,6 +166,11 @@ if st.button("Download Reel"):
             file_name="downloaded_video.mp4",
             mime="video/mp4"
         )
+        if os.path.exists(video_dir):
+            for file_name in os.listdir(video_dir):
+                file_path = os.path.join(video_dir, file_name)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
 
 # Shared File Uploader for Extract Frames and Cut Clip
 st.markdown("<h2 class='sub-title'>Upload Video for Processing</h2>", unsafe_allow_html=True)
