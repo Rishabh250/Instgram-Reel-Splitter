@@ -1,4 +1,4 @@
 streamlit
 instaloader
 opencv-python-headless
-ffmpeg-python
+imageio-ffmpeg
