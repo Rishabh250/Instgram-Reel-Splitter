@@ -3,7 +3,7 @@ import instaloader
 import cv2
 import os
 import io
-import ffmpeg
+import imageio_ffmpeg as ffmpeg_exe
 import zipfile
 import tempfile
 
@@ -113,14 +113,17 @@ def cut_clip(video_path, start_time, end_time):
     output_path = os.path.join(temp_dir, f"clip_{start_time}_{end_time}.mp4")
 
     try:
+        # Use imageio-ffmpeg to locate the ffmpeg binary
+        ffmpeg_path = ffmpeg_exe.get_ffmpeg_exe()
         (
             ffmpeg
             .input(video_path, ss=start_time, to=end_time)
             .output(output_path)
-            .run()
+            .run(cmd=ffmpeg_path)  # Specify the ffmpeg binary path
         )
         st.success("Clip cut successfully")
 
+        # Zip the output clip in memory
         zip_buffer = io.BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
             zip_file.write(output_path, arcname="clip.mp4")
