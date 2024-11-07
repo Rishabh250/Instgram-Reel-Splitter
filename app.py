@@ -3,9 +3,10 @@ import instaloader
 import cv2
 import os
 import io
-import imageio_ffmpeg as ffmpeg_exe
+import ffmpeg
 import zipfile
 import tempfile
+import imageio_ffmpeg as ffmpeg_exe
 
 # Custom CSS for styling
 st.markdown("""
@@ -46,7 +47,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Helper functions
+# Helper function to download Instagram reel
 def download_reel(url):
     if not url:
         st.error("No URL provided")
@@ -71,6 +72,7 @@ def download_reel(url):
         st.error(f"Error: {str(e)}")
         return None
 
+# Helper function to extract frames as ZIP
 def extract_frames(video_path):
     if not video_path or not os.path.exists(video_path):
         st.error("Invalid video path")
@@ -93,6 +95,7 @@ def extract_frames(video_path):
 
     cap.release()
 
+    # Zip frames in memory
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
         for frame_path in frames_list:
@@ -101,6 +104,7 @@ def extract_frames(video_path):
     st.success("Frames extracted and zipped successfully")
     return zip_buffer
 
+# Helper function to cut video clip as ZIP using imageio-ffmpeg
 def cut_clip(video_path, start_time, end_time):
     if not video_path or not os.path.exists(video_path):
         st.error("Invalid video path")
@@ -139,7 +143,7 @@ st.markdown("<p class='description'>Download, extract frames, and cut clips from
 
 # Download Reel Section
 st.markdown("<h2 class='sub-title'>Download Instagram Reel</h2>", unsafe_allow_html=True)
-st.write("Enter the Instagram Reel URL to download the video directly from Instagram.")
+st.write("Enter the Instagram Reel URL to download the video directly.")
 url = st.text_input("Instagram Reel URL")
 if st.button("Download Reel"):
     video_data = download_reel(url)
