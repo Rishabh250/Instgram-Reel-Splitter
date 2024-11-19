@@ -6,7 +6,7 @@ from pymongo import MongoClient
 from werkzeug.utils import secure_filename
 
 from config import S3_BUCKET, S3_CLIENT, BASE_FOLDER, MONGO_URI
-from models.video import save_metadata, get_video_metadata
+from database.models.video import save_metadata, get_video_metadata
 from video_processing.clip_cutter import cut_clip
 from video_processing.downloader import download_reel
 from video_processing.frame_extractor import extract_frames
