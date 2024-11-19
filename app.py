@@ -8,7 +8,6 @@ from database.models.video import save_metadata, get_video_metadata, update_vide
 from video_processing.clip_cutter import cut_clip
 from video_processing.downloader import download_reel
 from video_processing.frame_extractor import extract_frames
-import shutil
 
 app = Flask(__name__)
 
