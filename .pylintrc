@@ -1,0 +1,25 @@
+[MASTER]
+# Directories or files to ignore (comma separated)
+ignore=venv, migrations, tests
+# Set the maximum line length allowed
+max-line-length=120
+
+[MESSAGES CONTROL]
+# Disable specific warnings or errors
+disable=
+    missing-function-docstring,
+    missing-docstring,
+    line-too-long,
+    invalid-name,
+    too-many-arguments,
+    too-few-public-methods
+    
+[FORMAT]
+# Set the allowed maximum line length
+max-line-length=120
+
+[BASIC]
+# List of good variable names to avoid warnings about short names
+good-names=i,j,k,ex,Run,_,id
+init-hook='import sys, os; sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))'
+
