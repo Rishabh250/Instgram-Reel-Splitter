@@ -10,4 +10,4 @@ S3_CLIENT = boto3.client("s3", aws_access_key_id="your-access-key", aws_secret_a
 
 # Base folder for local storage
 BASE_FOLDER = os.path.join(os.getcwd(), "video_processing_files")
-os.makedirs(BASE_FOLDER, exist_ok=True) 
+os.makedirs(BASE_FOLDER, exist_ok=True)
