@@ -3,6 +3,7 @@
 ignore=venv, migrations, tests
 # Set the maximum line length allowed
 max-line-length=120
+load-plugins=pylint_mongoengine
 
 [MESSAGES CONTROL]
 # Disable specific warnings or errors
@@ -23,3 +24,5 @@ max-line-length=120
 good-names=i,j,k,ex,Run,_,id
 init-hook='import sys, os; sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))'
 
+[TYPECHECK]
+ignored-classes=mongoengine.base.metaclasses.TopLevelDocumentMetaclass
