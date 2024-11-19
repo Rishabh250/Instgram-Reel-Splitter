@@ -1,6 +1,7 @@
 import os
 import subprocess
 import imageio_ffmpeg as ffmpeg
+
 def cut_clip(video_path, start_time, end_time, base_folder):
     output_path = os.path.join(base_folder, "cut_clip.mp4")
     try:
