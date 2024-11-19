@@ -1,7 +1,7 @@
 import os
-import cv2 as cv
 import zipfile
 import tempfile
+import cv2 as cv
 
 def extract_frames(video_path, base_folder):
     cap = cv.VideoCapture(video_path)
@@ -25,4 +25,4 @@ def extract_frames(video_path, base_folder):
         for frame_path in frames_list:
             zipf.write(frame_path, arcname=os.path.basename(frame_path))
 
-    return zip_path 
+    return zip_path

@@ -16,6 +16,9 @@ def cut_clip(video_path, start_time, end_time, base_folder):
         ]
         subprocess.run(command, check=True)
         return output_path
-    except Exception as e:
-        print(f"Error cutting clip: {e}")
-        return None 
+    except subprocess.CalledProcessError as e:
+        print(f"Subprocess error cutting clip: {e}")
+        return None
+    except FileNotFoundError as e:
+        print(f"File not found: {e}")
+        return None
