@@ -1,5 +1,5 @@
-import boto3
 import os
+import boto3
 
 # MongoDB configuration
 MONGO_URI = "mongodb://localhost:27017"

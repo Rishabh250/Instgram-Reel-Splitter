@@ -1,5 +1,5 @@
-import instaloader
 import os
+import instaloader
 
 def download_reel(url, base_folder):
     loader = instaloader.Instaloader()

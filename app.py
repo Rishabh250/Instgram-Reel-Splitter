@@ -1,19 +1,20 @@
-from flask import Flask, request, jsonify, send_file
 import os
+from datetime import datetime
+
+from flask import Flask, request, jsonify, send_file
+from pymongo import MongoClient
+from werkzeug.utils import secure_filename
+
+from config import S3_BUCKET, S3_CLIENT, BASE_FOLDER, MONGO_URI
+from models.video import save_metadata, get_video_metadata
+from video_processing.clip_cutter import cut_clip
 from video_processing.downloader import download_reel
 from video_processing.frame_extractor import extract_frames
-from video_processing.clip_cutter import cut_clip
-from models.video import save_metadata, get_video_metadata
-from pymongo import MongoClient
-from config import S3_BUCKET, S3_CLIENT, BASE_FOLDER
-from datetime import datetime
-from werkzeug.utils import secure_filename
 
 # Initialize Flask app
 app = Flask(__name__)
 
 # MongoDB Setup
-from config import MONGO_URI
 client = MongoClient(MONGO_URI)
 db = client.video_processing
 videos_collection = db.videos
